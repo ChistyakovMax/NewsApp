@@ -1,13 +1,12 @@
 package com.example.newsapp.views.newslist
 
 
-import android.util.Log
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.newsapp.model.api.RetrofitClient
 import com.example.newsapp.model.entity.Article
-import com.example.newsapp.model.entity.News
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -29,7 +28,7 @@ class NewsViewModel : ViewModel() {
 
     fun getNews() : Observable<Article>{
         return RetrofitClient.requestApi
-            .getNewsList("us", "c447104dd4014982b75313365151999f")
+            .getNewsList("us", RetrofitClient.API_KEY)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .flatMap {
