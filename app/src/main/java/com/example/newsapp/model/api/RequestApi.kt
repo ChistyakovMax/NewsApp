@@ -1,6 +1,8 @@
 package com.example.newsapp.model.api
 
+import com.example.newsapp.model.entity.Article
 import com.example.newsapp.model.entity.News
+
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
