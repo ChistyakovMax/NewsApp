@@ -5,45 +5,87 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.R
+import com.example.newsapp.adapters.NewsListAdapter
+import com.example.newsapp.databinding.FragmentSearchingNewsBinding
+import com.example.newsapp.model.entity.Article
+import com.example.newsapp.views.details.DetailsFragment
+import com.example.newsapp.views.newslist.NewsListFragment
+import com.example.newsapp.views.util.AppState
+import com.example.newsapp.views.util.gone
+import com.example.newsapp.views.util.visible
 
 
 class SearchingNewsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
+    private var _binding: FragmentSearchingNewsBinding? = null
+    private val binding get() = _binding!!
+    lateinit var viewModel: SearchingViewModel
+    private lateinit var recyclerView : RecyclerView
+    private lateinit var adapter: NewsListAdapter
+    private val listener = object : NewsListFragment.OnItemViewClickListener {
+        override fun onItemViewClick(article: Article) {
+            val manager = activity?.supportFragmentManager
+            if(manager != null){
+                val bundle = Bundle()
+                bundle.putParcelable(DetailsFragment.BUNDLE_EXTRA, article)
+                findNavController().navigate(R.id.detailsFragment, bundle)
+            }
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
+        viewModel = ViewModelProvider(this).get(SearchingViewModel::class.java)
 
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_searching_news, container, false)
+        _binding = FragmentSearchingNewsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+    fun initRecyclerView(){
+        adapter = NewsListAdapter(requireContext(), listener)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = adapter
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SearchengNewsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SearchingNewsFragment().apply {
-                arguments = Bundle().apply {
-
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        recyclerView = view?.findViewById(R.id.searchingNewsRecyclerView)!!
+        initRecyclerView()
+        viewModel.getNews().observe(viewLifecycleOwner, {
+            renderData(it)
+            //adapter.setData()
+        })
+        binding.searchText.addTextChangedListener {
+            if(it.toString().isNotEmpty()){
+                viewModel.searchingData(it.toString())
             }
+
+        }
     }
+    private fun renderData(appState: AppState) {
+        when (appState) {
+            is AppState.Success -> {
+                binding.progress.gone()
+                adapter.setData(appState.newsData)
+            }
+            is AppState.Loading -> {
+                binding.progress.visible()
+            }
+            is AppState.Error -> {
+                binding.progress.gone()
+
+            }
+        }
+    }
+
+
 }

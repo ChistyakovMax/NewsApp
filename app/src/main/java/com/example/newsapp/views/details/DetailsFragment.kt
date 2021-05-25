@@ -1,50 +1,108 @@
 package com.example.newsapp.views.details
 
 import android.os.Bundle
+import android.util.Log
+import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.example.newsapp.R
+import com.example.newsapp.databinding.FragmentDetailsBinding
+import com.example.newsapp.db.NewsDatabase
+import com.example.newsapp.model.entity.Article
+import com.example.newsapp.views.util.gone
+import com.squareup.picasso.Callback
+import com.squareup.picasso.Picasso
 
 
 class DetailsFragment : Fragment() {
-
-    private var param1: String? = null
-    private var param2: String? = null
-
+    private var flag : Boolean = false
+    private var article: Article? = null
+    private var _binding: FragmentDetailsBinding? = null
+    private val binding get() = _binding!!
+    lateinit var viewModel: DetailsViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-           /* param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)*/
+            article = it.getParcelable(BUNDLE_EXTRA)
+            article?.type = 1
         }
+        val application = requireNotNull(this.activity).application
+        val dataSource = NewsDatabase.getDatabase(application).newsDao
+        val viewModelFactory = DetailsViewModelFactory(dataSource)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(DetailsViewModel::class.java)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_details, container, false)
+        _binding = FragmentDetailsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setDataInViews()
+        viewModel.checkNewsInFavorite(article!!)
+        viewModel.getCheckPoint().observe(viewLifecycleOwner, {
+            Log.d("MyLog", "observer $it")
+            flag = it
+            if (it) {
+                binding.like.setImageResource(R.drawable.unlike)
+            } else if (!it) {
+                binding.like.setImageResource(R.drawable.ic_favorite)
+            }
+        })
+        binding.like.setOnClickListener {
+            if(!flag){
+                viewModel.saveArticleInLocalStorage(article)
+                Toast.makeText(requireContext(), "Saved", Toast.LENGTH_LONG).show()
+            }else if(flag){
+                viewModel.deleteArticleFromLocalStorage(article!!)
+                Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_LONG).show()
+            }
+
+        }
+    }
+    private fun setDataInViews(){
+        binding.author.text = article?.author
+        binding.title.text = article?.title
+        binding.desc.text = article?.description
+        binding.publishedAt.text = article?.publishedAt
+        Picasso.with(requireContext()).load(article?.urlToImage).into(
+            binding.img,
+            object : Callback {
+                override fun onSuccess() {
+                    binding.progressBar.gone()
+                }
+
+                override fun onError() {
+                    binding.progressBar.gone()
+                }
+            })
+       /* Log.d("MyLog", article?.url!!)
+        binding.webView.apply {
+            webViewClient = WebViewClient()
+            settings.javaScriptEnabled = true
+            loadUrl(article!!.url)
+        }*/
+
+    }
+
+
+
+
+
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DetailsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
+       const val  BUNDLE_EXTRA = "news"
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(article: Article) =
             DetailsFragment().apply {
                 arguments = Bundle().apply {
-                   /* putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)*/
+                    putParcelable(BUNDLE_EXTRA, article)
                 }
             }
     }

@@ -1,7 +1,7 @@
 package com.example.newsapp.model.entity
 
 data class News(
-    val articles: MutableList<Article>,
+    val articles: List<Article>,
     val status: String,
     val totalResults: Int
 )
