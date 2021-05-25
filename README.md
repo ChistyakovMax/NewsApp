@@ -9,8 +9,8 @@ navigation component и Room для кеширования данных и со�
 
 
 <img src="https://github.com/vvvvvvvvvvvvvvvvvvvvvvvvv/NewsApp/blob/master/AppPhoto2.jpg" 
-  width="189" height="255" alt="lorem">
+  width="200" height="350" alt="lorem">
   <img src="https://github.com/vvvvvvvvvvvvvvvvvvvvvvvvv/NewsApp/blob/master/AppPhoto2.jpg" 
-  width="189" height="255" alt="lorem">
+  width="200" height="350" alt="lorem">
   <img src="https://github.com/vvvvvvvvvvvvvvvvvvvvvvvvv/NewsApp/blob/master/AppPhoto2.jpg" 
-  width="189" height="255" alt="lorem">
+  width="200" height="350" alt="lorem">
