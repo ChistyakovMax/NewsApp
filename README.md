@@ -8,11 +8,11 @@ navigation component и Room для кеширования данных и со�
 Использована архитектура MVVM без репозитория, так как приложение небольшое я подумал. В приложении также реализовано кеширование и сохранение статей.
 
 
-<img src="https://github.com/vvvvvvvvvvvvvvvvvvvvvvvvv/NewsApp/blob/master/AppPhoto2.jpg" 
-  width="230" height="400" alt="lorem">
+<img src="https://github.com/vvvvvvvvvvvvvvvvvvvvvvvvv/NewsApp/blob/master/AppPhoto1.jpg" 
+  width="220" height="400" alt="lorem">
   <img src="https://github.com/vvvvvvvvvvvvvvvvvvvvvvvvv/NewsApp/blob/master/AppPhoto2.jpg" 
-  width="230" height="400" alt="lorem">
-  <img src="https://github.com/vvvvvvvvvvvvvvvvvvvvvvvvv/NewsApp/blob/master/AppPhoto2.jpg" 
- width="230" height="400" alt="lorem">
-  <img src="https://github.com/vvvvvvvvvvvvvvvvvvvvvvvvv/NewsApp/blob/master/AppPhoto2.jpg" 
-  width="230" height="400" alt="lorem">
+  width="220" height="400" alt="lorem">
+  <img src="https://github.com/vvvvvvvvvvvvvvvvvvvvvvvvv/NewsApp/blob/master/AppPhoto3.jpg" 
+ width="220" height="400" alt="lorem">
+  <img src="https://github.com/vvvvvvvvvvvvvvvvvvvvvvvvv/NewsApp/blob/master/AppPhoto4.jpg" 
+  width="220" height="400" alt="lorem">
