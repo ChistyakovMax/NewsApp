@@ -12,7 +12,7 @@ navigation component и Room для кеширования данных и со�
   width="220" height="400" alt="lorem">
   <img src="https://github.com/vvvvvvvvvvvvvvvvvvvvvvvvv/NewsApp/blob/master/AppPhoto2.jpg" 
   width="220" height="400" alt="lorem">
-  <img src="https://github.com/vvvvvvvvvvvvvvvvvvvvvvvvv/NewsApp/blob/master/AppPhoto3.jpg" 
+  <img src="https://github.com/vvvvvvvvvvvvvvvvvvvvvvvvv/NewsApp/blob/master/appPhoto3.jpg" 
  width="220" height="400" alt="lorem">
   <img src="https://github.com/vvvvvvvvvvvvvvvvvvvvvvvvv/NewsApp/blob/master/AppPhoto4.jpg" 
   width="220" height="400" alt="lorem">
