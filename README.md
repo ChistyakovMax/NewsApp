@@ -6,6 +6,8 @@ RxJava,
 View Model and Livedata,
 navigation component и Room для кеширования данных и сохранения понравившихся статей.
 Использована архитектура MVVM без репозитория, так как приложение небольшое я подумал. В приложении также реализовано кеширование и сохранение статей.
+
+
 <img src="https://github.com/vvvvvvvvvvvvvvvvvvvvvvvvv/NewsApp/blob/master/AppPhoto2.jpg" 
   width="189" height="255" alt="lorem">
   <img src="https://github.com/vvvvvvvvvvvvvvvvvvvvvvvvv/NewsApp/blob/master/AppPhoto2.jpg" 
