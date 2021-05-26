@@ -2,16 +2,19 @@ package com.example.newsapp.adapters
 
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.R
 import com.example.newsapp.model.entity.Article
 import com.example.newsapp.views.newslist.NewsListFragment
+import com.example.newsapp.views.util.DiffUtilCallback
 import com.example.newsapp.views.util.gone
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -23,13 +26,20 @@ import kotlinx.android.synthetic.main.news_list_itemm.view.publishedAt
 import kotlinx.android.synthetic.main.news_list_itemm.view.title
 
 class NewsListAdapter(private val context: Context, private val onItemViewClickListener: NewsListFragment.OnItemViewClickListener, private var news : List<Article> = ArrayList()) : RecyclerView.Adapter<NewsListAdapter.MyViewHolder>() {
+
+    private lateinit var mDiffResult: DiffUtil.DiffResult
+    private var prevNewsList : List<Article> = ArrayList()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view : View = LayoutInflater.from(parent.context).inflate(R.layout.news_list_itemm, null, false)
         return MyViewHolder(view)
     }
     fun setData(list: List<Article>){
+
         news = list
-        notifyDataSetChanged()
+        mDiffResult = DiffUtil.calculateDiff(DiffUtilCallback(prevNewsList, list))
+        mDiffResult.dispatchUpdatesTo(this)
+        prevNewsList = list
+
     }
 
 

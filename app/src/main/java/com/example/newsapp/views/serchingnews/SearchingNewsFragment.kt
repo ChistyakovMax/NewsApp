@@ -1,6 +1,7 @@
 package com.example.newsapp.views.serchingnews
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -62,7 +63,6 @@ class SearchingNewsFragment : Fragment() {
         initRecyclerView()
         viewModel.getNews().observe(viewLifecycleOwner, {
             renderData(it)
-            //adapter.setData()
         })
         binding.searchText.addTextChangedListener {
             if(it.toString().isNotEmpty()){
