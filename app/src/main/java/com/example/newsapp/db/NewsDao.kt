@@ -14,11 +14,11 @@ interface NewsDao {
     @Query("SELECT * FROM news_table")
     fun getAllNews(): Flowable<List<Article>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(article: Article?): Completable
 
-    @Query("DELETE FROM news_table")
-    fun deleteAll() : Single<Integer>
+    @Query("DELETE FROM news_table WHERE type = 0")
+    fun deleteCache() : Single<Integer>
 
     @Query("DELETE FROM news_table where type = 1 and title like :title")
     fun deleteNews(title: String) : Single<Integer>
@@ -28,6 +28,9 @@ interface NewsDao {
 
     @Query("SELECT * FROM news_table WHERE type = 1 and title like :title")
     fun getNews(title: String) : Maybe<Article>
+
+    @Query("SELECT COUNT(*) FROM news_table")
+    fun getCountRecords() : Single<Integer>
 
 
 

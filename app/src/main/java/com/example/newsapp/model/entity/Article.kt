@@ -28,5 +28,5 @@ data class Article(
     @ColumnInfo(name = "urlToImage")
     val urlToImage: String,
     @ColumnInfo(name = "type")
-    var type: Int?
+    var type: Int = 0
 ) : Parcelable

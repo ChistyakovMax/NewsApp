@@ -4,6 +4,7 @@ import com.example.newsapp.model.entity.Article
 import com.example.newsapp.model.entity.News
 
 import io.reactivex.Observable
+import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
 import java.util.*
@@ -13,7 +14,7 @@ interface RequestApi {
     fun getNewsList(
         @Query("country") country: String,
         @Query("apiKey") apiKey: String
-    ) : Observable<News>
+    ) : Single<News>
     @GET("everything")
      fun searchForNews(
         @Query("q")
@@ -22,5 +23,5 @@ interface RequestApi {
         pageNumber: Int = 1,
         @Query("apiKey")
         apiKey: String = RetrofitClient.API_KEY
-    ): Observable<News>
+    ): Single<News>
 }

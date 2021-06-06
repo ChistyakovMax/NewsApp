@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.newsapp.model.entity.Article
 
-@Database(entities = arrayOf(Article::class), version = 4, exportSchema = false)
+@Database(entities = arrayOf(Article::class), version = 6, exportSchema = false)
 abstract class NewsDatabase : RoomDatabase() {
     abstract val newsDao: NewsDao
     companion object {

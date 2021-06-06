@@ -77,14 +77,7 @@ class FavoritesNewsFragment : Fragment() {
             }
             is AppState.Error -> {
                 binding.progress.gone()
-                /* Snackbar
-                     .make(
-                         binding.mainFragmentFAB,
-                         getString(R.string.error),
-                         Snackbar.LENGTH_INDEFINITE
-                     )
-                     .setAction(getString(R.string.reload)) { viewModel.getWeatherFromLocalSourceRus() }
-                     .show()*/
+
             }
         }
     }

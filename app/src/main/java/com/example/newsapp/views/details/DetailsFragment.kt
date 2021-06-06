@@ -48,7 +48,6 @@ class DetailsFragment : Fragment() {
         setDataInViews()
         viewModel.checkNewsInFavorite(article!!)
         viewModel.getCheckPoint().observe(viewLifecycleOwner, {
-            Log.d("MyLog", "observer $it")
             flag = it
             if (it) {
                 binding.like.setImageResource(R.drawable.unlike)
@@ -83,18 +82,9 @@ class DetailsFragment : Fragment() {
                     binding.progressBar.gone()
                 }
             })
-       /* Log.d("MyLog", article?.url!!)
-        binding.webView.apply {
-            webViewClient = WebViewClient()
-            settings.javaScriptEnabled = true
-            loadUrl(article!!.url)
-        }*/
+
 
     }
-
-
-
-
 
     companion object {
        const val  BUNDLE_EXTRA = "news"

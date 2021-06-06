@@ -1,5 +1,6 @@
 package com.example.newsapp.views.favorites
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,21 +16,15 @@ class FavoritesViewModel(val db: NewsDao) : ViewModel() {
         return favoriteNews
     }
 
-
-     fun getFavoriteNewsFromLocalStorage(){
+    fun getFavoriteNewsFromLocalStorage(){
          favoriteNews.value = AppState.Loading
-         db.getFavorites()
+         val subs = db.getFavorites()
              .subscribeOn(Schedulers.io())
              .observeOn(Schedulers.io())
              .subscribe({ favoriteNews.postValue(AppState.Success(it))})
+        disposable.add(subs)
     }
-    fun clearAll(){
-        disposable.add(db.deleteAll()
-            .subscribeOn(Schedulers.io())
-            .observeOn(Schedulers.io())
-            .doAfterSuccess {}.subscribe()
-        )
-    }
+
     override fun onCleared() {
         super.onCleared()
         disposable.clear()

@@ -24,7 +24,7 @@ import java.util.*
 class NewsListFragment : Fragment() {
     private var _binding: FragmentNewsListBinding? = null
     private val binding get() = _binding!!
-    lateinit var viewModel: NewsViewModel
+    private lateinit var  viewModel: NewsViewModel
     private lateinit var recyclerView : RecyclerView
     private lateinit var adapter: NewsListAdapter
     private val listener = object : OnItemViewClickListener{

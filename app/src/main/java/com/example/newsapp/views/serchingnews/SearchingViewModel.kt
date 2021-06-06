@@ -15,34 +15,25 @@ import io.reactivex.schedulers.Schedulers.io
 class SearchingViewModel : ViewModel() {
     private var disposable: CompositeDisposable = CompositeDisposable()
     private var appState : MutableLiveData<AppState> = MutableLiveData()
-    @Volatile
-    private var newsList: MutableList<Article> = ArrayList()
+
     fun getNews(): LiveData<AppState>{
         return appState
     }
 
     fun searchingData(request: String){
-        RetrofitClient.requestApi.searchForNews(request)
+       val subscriber =  RetrofitClient.requestApi.searchForNews(request)
             .subscribeOn(io())
-            .doOnSubscribe { appState.postValue(AppState.Loading) }
-            .doAfterTerminate { appState.postValue(AppState.Success(newsList)) }
             .observeOn(io())
-            .flatMap { return@flatMap Observable.fromIterable(it.articles)}
-            .subscribe(object : Observer<Article>{
-                override fun onSubscribe(d: Disposable) {
-                    disposable.add(d)
-                    newsList.clear()
+            .doOnSubscribe { appState.postValue(AppState.Loading) }
+            .subscribe(
+                {
+                    appState.postValue(AppState.Success(it.articles))
+                },
+                {
+                    it.printStackTrace()
                 }
-                override fun onError(e: Throwable) {
-                    AppState.Error(e)
-                }
-                override fun onComplete() {
-                }
-                override fun onNext(t: Article) {
-                    newsList.add(t)
-                }
-
-            })
+            )
+        disposable.add(subscriber)
     }
 
     override fun onCleared() {

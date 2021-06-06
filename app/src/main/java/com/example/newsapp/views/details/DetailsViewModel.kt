@@ -17,21 +17,24 @@ class DetailsViewModel(private val db : NewsDao) : ViewModel(){
         disposable.add(db.insert(article)
             .subscribeOn(io())
             .observeOn(io())
-            .subscribe({
-                checkPoint.postValue(true)
-            })
+            .subscribe({ checkPoint.postValue(true) },
+        {
+            it.printStackTrace()
+        }
+            )
         )
     }
     fun getCheckPoint(): LiveData<Boolean>{
         return checkPoint
     }
     fun checkNewsInFavorite(article: Article){
-        db.getNews(article.title)
+       val subs = db.getNews(article.title)
             .subscribeOn(io())
             .observeOn(io())
             .subscribe({
                 checkPoint.postValue(true)
             })
+        disposable.add(subs)
     }
     fun deleteArticleFromLocalStorage(article: Article){
         disposable.add(db.deleteNews(article.title)

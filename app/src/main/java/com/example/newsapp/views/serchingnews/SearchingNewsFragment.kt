@@ -25,7 +25,9 @@ import com.example.newsapp.views.util.visible
 class SearchingNewsFragment : Fragment() {
     private var _binding: FragmentSearchingNewsBinding? = null
     private val binding get() = _binding!!
-    lateinit var viewModel: SearchingViewModel
+    private val viewModel: SearchingViewModel by lazy {
+        ViewModelProvider(this).get(SearchingViewModel::class.java)
+    }
     private lateinit var recyclerView : RecyclerView
     private lateinit var adapter: NewsListAdapter
     private val listener = object : NewsListFragment.OnItemViewClickListener {
@@ -38,11 +40,7 @@ class SearchingNewsFragment : Fragment() {
             }
         }
     }
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(SearchingViewModel::class.java)
 
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
