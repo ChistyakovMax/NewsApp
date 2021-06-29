@@ -14,19 +14,24 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.R
 import com.example.newsapp.adapters.NewsListAdapter
 import com.example.newsapp.databinding.FragmentSearchingNewsBinding
+import com.example.newsapp.di.app.App
 import com.example.newsapp.model.entity.Article
 import com.example.newsapp.views.details.DetailsFragment
+import com.example.newsapp.views.factory.ViewModelFactory
 import com.example.newsapp.views.newslist.NewsListFragment
 import com.example.newsapp.views.util.AppState
 import com.example.newsapp.views.util.gone
 import com.example.newsapp.views.util.visible
+import javax.inject.Inject
 
 
 class SearchingNewsFragment : Fragment() {
     private var _binding: FragmentSearchingNewsBinding? = null
     private val binding get() = _binding!!
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
     private val viewModel: SearchingViewModel by lazy {
-        ViewModelProvider(this).get(SearchingViewModel::class.java)
+        ViewModelProvider(this, viewModelFactory).get(SearchingViewModel::class.java)
     }
     private lateinit var recyclerView : RecyclerView
     private lateinit var adapter: NewsListAdapter
@@ -46,6 +51,7 @@ class SearchingNewsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        App.appComponent.injectSearchNewsFragment(this)
         _binding = FragmentSearchingNewsBinding.inflate(inflater, container, false)
         return binding.root
     }

@@ -1,6 +1,5 @@
 package com.example.newsapp.db
 
-import android.service.autofill.SaveInfo
 import androidx.room.*
 import com.example.newsapp.model.entity.Article
 import io.reactivex.Completable

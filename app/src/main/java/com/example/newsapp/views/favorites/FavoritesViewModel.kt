@@ -1,15 +1,17 @@
 package com.example.newsapp.views.favorites
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.newsapp.db.NewsDao
+import com.example.newsapp.di.app.App
 import com.example.newsapp.views.util.AppState
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class FavoritesViewModel(val db: NewsDao) : ViewModel() {
+class FavoritesViewModel @Inject constructor(var db: NewsDao) : ViewModel() {
+
     private var favoriteNews: MutableLiveData<AppState> = MutableLiveData()
     private var disposable: CompositeDisposable = CompositeDisposable()
     fun getFavoriteNews(): LiveData<AppState>{

@@ -13,12 +13,15 @@ import com.example.newsapp.R
 import com.example.newsapp.adapters.NewsListAdapter
 import com.example.newsapp.databinding.FragmentNewsListBinding
 import com.example.newsapp.db.NewsDatabase
+import com.example.newsapp.di.app.App
 import com.example.newsapp.model.entity.Article
 import com.example.newsapp.views.details.DetailsFragment
+import com.example.newsapp.views.factory.ViewModelFactory
 import com.example.newsapp.views.util.AppState
 import com.example.newsapp.views.util.gone
 import com.example.newsapp.views.util.visible
 import java.util.*
+import javax.inject.Inject
 
 
 class NewsListFragment : Fragment() {
@@ -27,6 +30,8 @@ class NewsListFragment : Fragment() {
     private lateinit var  viewModel: NewsViewModel
     private lateinit var recyclerView : RecyclerView
     private lateinit var adapter: NewsListAdapter
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
     private val listener = object : OnItemViewClickListener{
         override fun onItemViewClick(article: Article) {
             val manager = activity?.supportFragmentManager
@@ -39,9 +44,7 @@ class NewsListFragment : Fragment() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val application = requireNotNull(this.activity).application
-        val dataSource = NewsDatabase.getDatabase(application).newsDao
-        val viewModelFactory = NewsViewModelFactory(dataSource)
+        App.appComponent.injectNewsListFragment(this)
         viewModel = ViewModelProvider(this, viewModelFactory).get(NewsViewModel::class.java)
         if(savedInstanceState == null){
             viewModel.getNewsData()

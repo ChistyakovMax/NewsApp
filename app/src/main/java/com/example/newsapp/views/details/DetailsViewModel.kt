@@ -1,16 +1,16 @@
 package com.example.newsapp.views.details
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.newsapp.db.NewsDao
 import com.example.newsapp.model.entity.Article
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers.io
+import javax.inject.Inject
 
-class DetailsViewModel(private val db : NewsDao) : ViewModel(){
+class DetailsViewModel @Inject constructor(var db : NewsDao) : ViewModel(){
+
     private var disposable: CompositeDisposable = CompositeDisposable()
     var checkPoint: MutableLiveData<Boolean> = MutableLiveData()
     fun saveArticleInLocalStorage(article: Article?){
