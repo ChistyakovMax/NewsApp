@@ -11,12 +11,15 @@ import com.example.newsapp.R
 import com.example.newsapp.adapters.NewsListAdapter
 import com.example.newsapp.databinding.FragmentFavoritesNewsBinding
 import com.example.newsapp.db.NewsDatabase
+import com.example.newsapp.di.app.App
 import com.example.newsapp.model.entity.Article
 import com.example.newsapp.views.details.DetailsFragment
+import com.example.newsapp.views.factory.ViewModelFactory
 import com.example.newsapp.views.newslist.NewsListFragment
 import com.example.newsapp.views.util.AppState
 import com.example.newsapp.views.util.gone
 import com.example.newsapp.views.util.visible
+import javax.inject.Inject
 
 
 class FavoritesNewsFragment : Fragment() {
@@ -25,6 +28,8 @@ class FavoritesNewsFragment : Fragment() {
     lateinit var viewModel: FavoritesViewModel
     private lateinit var recyclerView : RecyclerView
     private lateinit var adapter: NewsListAdapter
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
     private val listener = object : NewsListFragment.OnItemViewClickListener {
         override fun onItemViewClick(article: Article) {
             val manager = activity?.supportFragmentManager
@@ -37,9 +42,8 @@ class FavoritesNewsFragment : Fragment() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val application = requireNotNull(this.activity).application
-        val dataSource = NewsDatabase.getDatabase(application).newsDao
-        val viewModelFactory = FavoritesViewModelFactory(dataSource)
+
+        App.appComponent.injectFavoritesFragment(this)
         viewModel = ViewModelProvider(this, viewModelFactory).get(FavoritesViewModel::class.java)
         viewModel.getFavoriteNewsFromLocalStorage()
 

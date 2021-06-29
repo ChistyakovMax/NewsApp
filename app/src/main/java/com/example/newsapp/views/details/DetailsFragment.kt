@@ -9,10 +9,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.newsapp.R
 import com.example.newsapp.databinding.FragmentDetailsBinding
 import com.example.newsapp.db.NewsDatabase
+import com.example.newsapp.di.app.App
 import com.example.newsapp.model.entity.Article
+import com.example.newsapp.views.factory.ViewModelFactory
 import com.example.newsapp.views.util.gone
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import javax.inject.Inject
 
 
 class DetailsFragment : Fragment() {
@@ -20,6 +23,8 @@ class DetailsFragment : Fragment() {
     private var article: Article? = null
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
     lateinit var viewModel: DetailsViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,9 +32,8 @@ class DetailsFragment : Fragment() {
             article = it.getParcelable(BUNDLE_EXTRA)
             article?.type = 1
         }
-        val application = requireNotNull(this.activity).application
-        val dataSource = NewsDatabase.getDatabase(application).newsDao
-        val viewModelFactory = DetailsViewModelFactory(dataSource)
+        App.appComponent.injectDetailsFragment(this)
+
         viewModel = ViewModelProvider(this, viewModelFactory).get(DetailsViewModel::class.java)
     }
 
@@ -70,7 +74,7 @@ class DetailsFragment : Fragment() {
         binding.author.text = article?.author
         binding.title.text = article?.title
         binding.desc.text = article?.description
-        binding.publishedAt.text = article?.publishedAt
+        binding.publishedAt.text = article?.publishedAt?.substring(0,10)
         Picasso.with(requireContext()).load(article?.urlToImage).into(
             binding.img,
             object : Callback {
