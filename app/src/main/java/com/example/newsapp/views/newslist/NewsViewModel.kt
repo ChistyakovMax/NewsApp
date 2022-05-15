@@ -25,7 +25,7 @@ class NewsViewModel @Inject constructor(var db: NewsDao, var requestApi: Request
     fun getNewsData(){
 
            var subscriber = requestApi
-            .getNewsList("us", RetrofitClient.API_KEY)
+            .getNewsList("ru", RetrofitClient.API_KEY)
             .subscribeOn(io())
             .observeOn(io())
             .doOnSubscribe {  appState.postValue(AppState.Loading) }
