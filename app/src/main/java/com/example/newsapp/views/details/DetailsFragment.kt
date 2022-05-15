@@ -62,10 +62,10 @@ class DetailsFragment : Fragment() {
         binding.like.setOnClickListener {
             if(!flag){
                 viewModel.saveArticleInLocalStorage(article)
-                Toast.makeText(requireContext(), "Saved", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Сохранено!", Toast.LENGTH_LONG).show()
             }else if(flag){
                 viewModel.deleteArticleFromLocalStorage(article!!)
-                Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Удалено!", Toast.LENGTH_LONG).show()
             }
 
         }
