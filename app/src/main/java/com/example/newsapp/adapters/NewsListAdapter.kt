@@ -1,8 +1,6 @@
 package com.example.newsapp.adapters
 
-
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,55 +17,56 @@ import com.example.newsapp.views.util.gone
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.news_list_itemm.view.*
-import kotlinx.android.synthetic.main.news_list_itemm.view.author
-import kotlinx.android.synthetic.main.news_list_itemm.view.desc
-import kotlinx.android.synthetic.main.news_list_itemm.view.img
-import kotlinx.android.synthetic.main.news_list_itemm.view.publishedAt
-import kotlinx.android.synthetic.main.news_list_itemm.view.title
 
-class NewsListAdapter(private val context: Context, private val onItemViewClickListener: NewsListFragment.OnItemViewClickListener, private var news : List<Article> = ArrayList()) : RecyclerView.Adapter<NewsListAdapter.MyViewHolder>() {
+class NewsListAdapter(
+    private val context: Context,
+    private val onItemViewClickListener: NewsListFragment.OnItemViewClickListener,
+    private var news: List<Article> = ArrayList()
+) : RecyclerView.Adapter<NewsListAdapter.MyViewHolder>() {
 
     private lateinit var mDiffResult: DiffUtil.DiffResult
-    private var prevNewsList : List<Article> = ArrayList()
+    private var prevNewsList: List<Article> = ArrayList()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val view : View = LayoutInflater.from(parent.context).inflate(R.layout.news_list_itemm, null, false)
+        val view: View =
+            LayoutInflater.from(parent.context).inflate(R.layout.news_list_itemm, null, false)
         return MyViewHolder(view)
     }
-    fun setData(list: List<Article>){
+
+    fun setData(list: List<Article>) {
 
         news = list
         mDiffResult = DiffUtil.calculateDiff(DiffUtilCallback(prevNewsList, list))
         mDiffResult.dispatchUpdatesTo(this)
         prevNewsList = list
-
     }
-
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bind(news.get(position))
         Picasso.with(context).load(news.get(position).urlToImage)
             .fit()
-            .into(holder.newsImage, object : Callback{
+            .into(holder.newsImage, object : Callback {
                 override fun onSuccess() {
                     holder.progress.gone()
                 }
+
                 override fun onError() {
                     holder.progress.gone()
                 }
             })
     }
 
-
     override fun getItemCount(): Int {
         return news.size
     }
+
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var title: TextView
         var progress: ProgressBar
         var description: TextView
         var author: TextView
-        var newsImage : ImageView
-        var publishedAt : TextView
+        var newsImage: ImageView
+        var publishedAt: TextView
+
         init {
             title = itemView.title
             progress = itemView.item_progress_bar
@@ -77,9 +76,9 @@ class NewsListAdapter(private val context: Context, private val onItemViewClickL
             newsImage = itemView.img
         }
 
-        fun bind (news: Article){
+        fun bind(news: Article) {
             title.text = news.title
-            publishedAt.text = news.publishedAt.substring(0,10)
+            publishedAt.text = news.publishedAt.substring(0, 10)
             description.text = news.description
             author.text = news.author
             title.text = news.title

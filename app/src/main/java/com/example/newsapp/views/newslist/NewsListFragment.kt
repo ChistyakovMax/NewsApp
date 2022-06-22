@@ -1,10 +1,10 @@
 package com.example.newsapp.views.newslist
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.R
 import com.example.newsapp.adapters.NewsListAdapter
 import com.example.newsapp.databinding.FragmentNewsListBinding
-import com.example.newsapp.db.NewsDatabase
 import com.example.newsapp.di.app.App
 import com.example.newsapp.model.entity.Article
 import com.example.newsapp.views.details.DetailsFragment
@@ -20,33 +19,33 @@ import com.example.newsapp.views.factory.ViewModelFactory
 import com.example.newsapp.views.util.AppState
 import com.example.newsapp.views.util.gone
 import com.example.newsapp.views.util.visible
-import java.util.*
 import javax.inject.Inject
-
 
 class NewsListFragment : Fragment() {
     private var _binding: FragmentNewsListBinding? = null
     private val binding get() = _binding!!
-    private lateinit var  viewModel: NewsViewModel
-    private lateinit var recyclerView : RecyclerView
+    private lateinit var viewModel: NewsViewModel
+    private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: NewsListAdapter
+
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    private val listener = object : OnItemViewClickListener{
+    private val listener = object : OnItemViewClickListener {
         override fun onItemViewClick(article: Article) {
             val manager = activity?.supportFragmentManager
-            if(manager != null){
+            if (manager != null) {
                 val bundle = Bundle()
                 bundle.putParcelable(DetailsFragment.BUNDLE_EXTRA, article)
                 findNavController().navigate(R.id.detailsFragment, bundle)
             }
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.appComponent.injectNewsListFragment(this)
         viewModel = ViewModelProvider(this, viewModelFactory).get(NewsViewModel::class.java)
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             viewModel.getNewsData()
         }
 
@@ -55,7 +54,7 @@ class NewsListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentNewsListBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -68,7 +67,6 @@ class NewsListFragment : Fragment() {
             renderData(it)
         })
     }
-
 
     private fun renderData(appState: AppState) {
         when (appState) {
@@ -84,12 +82,14 @@ class NewsListFragment : Fragment() {
             }
         }
     }
-    fun initRecyclerView(news: List<Article>){
+
+    fun initRecyclerView(news: List<Article>) {
         adapter = NewsListAdapter(requireContext(), listener, news)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
     }
-    interface OnItemViewClickListener{
+
+    interface OnItemViewClickListener {
         fun onItemViewClick(article: Article)
     }
 
